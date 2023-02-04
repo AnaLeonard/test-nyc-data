@@ -12,6 +12,11 @@ function App() {
   const [deathData, setDeathData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedRace, setSelectedRace] = useState("none");
+
+  // const raceState = useState("none");
+  // const selectedRace = raceState[0];
+  // const setSelectedRace = raceState[1];
+
   const [selectedYear, setSelectedYear] = useState("none");
   const [selectedSex, setSelectedSex] = useState("none");
 
@@ -31,38 +36,30 @@ function App() {
       .catch((error) => {
         console.log(error)
       });
+      //the useEffect only runs once 
+      //because the [] is empty 
   }, []);
 
   useEffect(() => {
     console.log("selectedRace", selectedRace);
     console.log("selectedSex", selectedSex);
-    // TODO: Add year selection
-    const newData = deathData.filter((data) => {
-      if (data["race_ethnicity"] === selectedRace &&
-        data.sex === selectedSex) {
-        return true;
-      }
-      return false;
-    });
+    console.log("selectedYear", selectedYear);
 
-    setFilteredData(newData);
-  }, [selectedRace, deathData, selectedSex]);
 
-  function filterData(dataProperty, filterValue) {
-    if (filterValue === "none") {
-      setFilteredData(deathData);
-    } else {
+    console.log(deathData);
       const newData = deathData.filter((data) => {
-        // if (data[dataProperty] === filterValue) {
-        if (data["race_ethnicity"] === selectedRace) { 
+        if ((selectedRace !== "none" && data["race_ethnicity"] === selectedRace) &&
+          (selectedSex !== "none" && data.sex === selectedSex) &&
+          (selectedYear !== "none" && data.year === selectedYear)) {
           return true;
         }
         return false;
       });
-
       setFilteredData(newData);
-    }
-  }
+//whenever one of the variables changes it is seen in our end
+//and the setFilteredData Function is called 
+
+  }, [selectedRace, deathData, selectedSex, selectedYear]);
 
   return (
     <div className="App" style={{margin: "20px" }}>
@@ -72,7 +69,7 @@ function App() {
           labelId="select-race-label"
           id="select-race-id"
           value={selectedRace}
-          label="Age"
+          label="Race"
           onChange={(value) => {
             setSelectedRace(value.target.value);
           }}
@@ -115,7 +112,6 @@ function App() {
           value={selectedYear}
           label="Year"
           onChange={(value) => {
-            filterData("year", value.target.value);
             setSelectedYear(value.target.value);
           }}
           autoWidth
