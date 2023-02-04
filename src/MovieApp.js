@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 
 import './App.css';
 
-const APIKEY = "52637932af3c2704ad91e8c8b03a1d3b";
+const APIKEY = "";
 
 //key we have to access the data
 //however not secure because everyone can have access to the key 
